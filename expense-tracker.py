@@ -1,4 +1,11 @@
 import argparse
+import os
+import json
+
+
+
+DATA_FILE = "expenses.json"
+
 
 def main():
     parser = argparse.ArgumentParser(description="Expense Tracker")
@@ -25,6 +32,18 @@ def main():
 
     print("Comando recebido:", args.command)
     print("Argumentos:", args)
+
+def load_expenses():
+    """
+    Lê o arquivo expenses.json e retorna a lista de despesas.
+    Se o arquivo não existir, retorna uma lista vazia.
+    """
+    if not os.path.exists(DATA_FILE):
+        return []
+    with open(DATA_FILE, "r") as file:
+        return json.load(file)
+
+
 
 
 if __name__ == "__main__":
