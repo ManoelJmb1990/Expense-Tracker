@@ -50,5 +50,15 @@ def save_expenses(expenses):
     with open(DATA_FILE, "w") as file:
         json.dump(expenses, file, indent=2)
 
+def generate_id(expenses):
+    """
+    Gera um novo ID baseado no maior ID existente.
+    """
+    if not expenses:
+        return 1
+    return max(expenses["id"] for expense in expenses) + 1
+
+
+
 if __name__ == "__main__":
     main()
