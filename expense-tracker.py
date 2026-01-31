@@ -43,8 +43,12 @@ def load_expenses():
     with open(DATA_FILE, "r") as file:
         return json.load(file)
 
-
-
+def save_expenses(expenses):
+    """
+    Salva a lista de despesas no arquivo expenses.json.
+    """
+    with open(DATA_FILE, "w") as file:
+        json.dump(expenses, file, indent=2)
 
 if __name__ == "__main__":
     main()
