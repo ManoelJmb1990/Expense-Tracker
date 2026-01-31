@@ -1,7 +1,7 @@
 import argparse
 import os
 import json
-
+import datetime
 
 
 DATA_FILE = "expenses.json"
@@ -58,6 +58,28 @@ def generate_id(expenses):
         return 1
     return max(expenses["id"] for expense in expenses) + 1
 
+# =========================
+# COMANDOS
+# =========================
+
+
+def add_expense(description, amount):
+    # Adiciona uma nova despesa e salva no arquivo JSON.
+    if amount <= 0:
+        print("O valor da despesa deve ser positivo.")
+        return
+    expenses = load_expenses()
+
+    new_expense = {
+        "id": generate_id(expenses),
+        "date": datetime.now().strftime("%y/%m/%d"),
+        "description": description,
+        "amount": amount
+    }
+    expenses.append(new_expense)
+    save_expenses(expenses)
+
+    print(f"Despesa adicionada com sucesso. (ID: {new_expense['id']})")
 
 
 if __name__ == "__main__":
