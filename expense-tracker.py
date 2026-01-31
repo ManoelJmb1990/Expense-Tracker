@@ -19,7 +19,7 @@ def main():
 
     #Comando: delete
     delete_parser = subparsers.add_parser("delete", help="Deletar uma despesa")
-    delete_parser.add_argument("--id", type=int, required=True, help="ID da despesa")
+    delete_parser.add_argument("--id", type=int, required=True, help="ID da despesa.")
 
     args = parser.parse_args()
 
