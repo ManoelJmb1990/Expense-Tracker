@@ -35,7 +35,7 @@ def main():
     if args.command == "add":
         add_expense(args.description, args.amount)
 
-    elif args.command == "List":
+    elif args.command == "list":
         list_expenses()
 
     elif args.command == "summary":
@@ -108,6 +108,27 @@ def generate_id(expenses):
     if not expenses:
         return 1
     return max(expenses["id"] for expense in expenses) + 1
+
+def list_expenses():
+    #Lista todas as despesas salvas no arquivo JSON.
+    # List all expenses saved in the JSON file.
+    expenses = load_expenses()
+
+    if not expenses:
+        print("No registered expenses")
+        return
+
+    # Placeholder (a lógica de tabela vem depois)
+    # Placeholder (table logic comes later)
+    print("ID  Data        Descrição        Valor")
+
+    for expense in expenses:
+        print(
+            expense["id"],
+            expense["date"],
+            expense["description"],
+            expense["amount"]
+        )
 
 
 def add_expense(description, amount):
