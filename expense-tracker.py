@@ -6,7 +6,9 @@ import datetime
 
 DATA_FILE = "expenses.json"
 
-
+# =========================
+# CLI
+# =========================
 def main():
     parser = argparse.ArgumentParser(description="Expense Tracker")
 
@@ -15,14 +17,14 @@ def main():
     #comando add
     add_parser = subparsers.add_parser("add", help="Adicionar uma despesa")
     add_parser.add_argument("--description", required=True, help="Descrição da despesa")
-    add_parser.add_argument("--amount", required=True, help="Valor da despesa")
+    add_parser.add_argument("--amount", required=True, type= float, help="Valor da despesa")
 
     #Comando: list
-    subparsers.add_parser("List", help="Lista de todas as despesas")
+    subparsers.add_parser("list", help="Lista de todas as despesas")
 
     #Comando: summary
     summary_parser = subparsers.add_parser("summary", help="Resumo das despesas")
-    summary_parser.add_argument("--mount", type=int, help="Mês para filtrar (1-12)")
+    summary_parser.add_argument("--mounth", type=int, help="Mês para filtrar (1-12)")
 
     #Comando: delete
     delete_parser = subparsers.add_parser("delete", help="Deletar uma despesa")
@@ -30,8 +32,20 @@ def main():
 
     args = parser.parse_args()
 
-    print("Comando recebido:", args.command)
-    print("Argumentos:", args)
+    if args.command == "add":
+        add_expense(args.description, args.amount)
+
+    elif args.command == "List":
+        list_expenses()
+
+    elif args.command == "summary":
+        summary_expenses(args.mounth)
+
+    elif args.command == "delete":
+        delete_expense(args.id)
+
+    else:
+        parser.print_help()
 
 def load_expenses():
     """
@@ -42,6 +56,34 @@ def load_expenses():
         return []
     with open(DATA_FILE, "r") as file:
         return json.load(file)
+
+def summary_expenses(mounth=None):
+    """
+    Exibe o total de despesas.
+    Se month for informado, filtra pelo mês (ano corrente).
+    """
+    expenses = load_expenses()
+
+    if not expenses:
+        print("Nenhuma despesa cadastrada")
+        return
+    total = 0
+
+    for expense in expenses:
+        # Se o mês foi informado, filtra
+        if mounth:
+            expense_mounth = int(expense["date"].split("-"[1]))
+            if expense_mounth != mounth:
+                continue
+
+        total += expense["amount"]
+    if mounth:
+        print(f"Total de despesas do mês {mounth}: ${total}")
+
+    else:
+        print(f"Total de despesas: ${total}")
+
+
 
 def save_expenses(expenses):
     """
@@ -80,6 +122,7 @@ def add_expense(description, amount):
     save_expenses(expenses)
 
     print(f"Despesa adicionada com sucesso. (ID: {new_expense['id']})")
+
 
 
 if __name__ == "__main__":
