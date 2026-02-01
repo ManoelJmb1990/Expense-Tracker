@@ -83,7 +83,16 @@ def summary_expenses(mounth=None):
     else:
         print(f"Total de despesas: ${total}")
 
+def delete_expense(expense_id):
+    # remove uma despesa pelo id
 
+    expenses = load_expenses()
+    for expense in expenses:
+        if expense["id"] == expense_id:
+            expenses.remove(expense)
+            save_expenses(expenses)
+            return
+    print("Erro: despesa com ID informado não encontrada.")
 
 def save_expenses(expenses):
     """
@@ -99,10 +108,6 @@ def generate_id(expenses):
     if not expenses:
         return 1
     return max(expenses["id"] for expense in expenses) + 1
-
-# =========================
-# COMANDOS
-# =========================
 
 
 def add_expense(description, amount):
